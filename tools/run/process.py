@@ -173,7 +173,9 @@ def process_collection(ctx, collection_key, collection, collection_data):
         for taskitem in tasklist:
             res.append(process_ligand(taskitem))
     else:
-        with multiprocessing.Pool(processes=ctx["vcpus_to_use"]) as pool:
+        processes = int(ctx["vcpus_to_use"])
+        logging.info("Using %s processes.", processes)
+        with multiprocessing.Pool(processes=processes) as pool:
             res = pool.map(process_ligand, tasklist)
 
     end_time = datetime.now()

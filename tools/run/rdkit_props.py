@@ -2,6 +2,7 @@
 # RDKit
 #
 import time
+import logging
 import rdkit
 from rdkit import Chem
 import rdkit.Chem.QED
@@ -27,10 +28,14 @@ def run_rdkit_attributes(ctx, tautomer, smi, attributes_to_gen, attributes):
             if attr == "qed_rdkit":
                 attributes[attr]["val"] = rdkit.Chem.QED.qed(mol)
             elif attr == "scaffold_rdkit":
-                attributes[attr]["val"] = rdkit.Chem.MolToSmiles(
-                    rdkit.Chem.Scaffolds.MurckoScaffold.GetScaffoldForMol(mol),
-                    canonical=True,
-                )
+                try:
+                    attributes[attr]["val"] = rdkit.Chem.MolToSmiles(
+                        rdkit.Chem.Scaffolds.MurckoScaffold.GetScaffoldForMol(mol),
+                        canonical=True,
+                    )
+                except Exception as _:
+                    logging.error("MurckoScaffold Failed for %s", smi)
+                    continue
 
     tautomer["timers"].append(
         ["rdkit_attributes", time.perf_counter() - step_timer_start]

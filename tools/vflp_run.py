@@ -144,8 +144,13 @@ def get_helper_versions(ctx):
         "standardizer": "INVALID",
         "obabel": "INVALID",
     }
-    nailgun_host = ctx["main_config"]["nailgun_host"]
-    nailgun_port = ctx["main_config"]["nailgun_port"]
+    try:
+        nailgun_host = ctx["main_config"]["nailgun_host"]
+        nailgun_port = ctx["main_config"]["nailgun_port"]
+    except KeyError:
+        nailgun_host = None
+        nailgun_port = None
+
     command_grep: str = r"grep -m 1 version | sed 's/.*version \([0-9. ]*\).*/\\1/'"
 
     if is_cxcalc_used(ctx):

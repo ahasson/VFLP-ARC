@@ -15,7 +15,7 @@ from run.obabel import (
     obabel_check_energy,
     obabel_generate_targetformat,
 )
-from run.rdkit import run_rdkit_stereoisomer_generation
+from run.rdkit_props import run_rdkit_stereoisomer_generation
 from run.conformer import run_conformation_generation
 from run.protonation import run_protonation_generation
 from run.utils import get_intermediate_dir_ligand
